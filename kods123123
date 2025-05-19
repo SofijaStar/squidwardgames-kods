@@ -1,0 +1,74 @@
+import tkinter as tk
+import re
+ 
+valid_domains = ["gmail.com", "inbox.lv", "edu.riga.lv"]
+ 
+def check_email():
+    email = entry.get().strip()
+    pattern = r"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$"
+ 
+    if re.match(pattern, email):
+        domain = email.split('@')[1].lower()
+        if domain in valid_domains:
+            result_label.config(text="✅ Status: VALID", fg="#2f855a")
+        else:
+            result_label.config(text="❌ Status: Neatļauts domēns", fg="#dd6b20")
+    else:
+        result_label.config(text="❌ Status: Nepareizs formāts", fg="#e53e3e")
+ 
+def close_app():
+    root.destroy()
+ 
+def start_move(event):
+    root.x = event.x
+    root.y = event.y
+ 
+def stop_move(event):
+    root.x = None
+    root.y = None
+ 
+def on_motion(event):
+    x = (event.x_root - root.x)
+    y = (event.y_root - root.y)
+    root.geometry("+%s+%s" % (x, y))
+ 
+root = tk.Tk()
+root.overrideredirect(True)
+root.geometry("600x350")
+root.config(bg="#f0f4f8")
+root.resizable(False, False)
+ 
+top_bar = tk.Frame(root, bg="#4a90e2", height=40)
+top_bar.pack(fill="x")
+ 
+top_bar.bind("<ButtonPress-1>", start_move)
+top_bar.bind("<ButtonRelease-1>", stop_move)
+top_bar.bind("<B1-Motion>", on_motion)
+ 
+title = tk.Label(top_bar, text="E-pasta validācija", bg="#4a90e2", fg="white", font=("Segoe UI", 14, "bold"))
+title.pack(side="left", padx=10)
+ 
+close_button = tk.Button(top_bar, text="✕", bg="#4a90e2", fg="black", font=("Segoe UI", 14, "bold"),
+                         bd=0, activebackground="#e74c3c", activeforeground="white", command=close_app)
+close_button.pack(side="right", padx=10)
+ 
+content_frame = tk.Frame(root, bg="white", bd=2, relief="groove")
+content_frame.pack(expand=True, fill="both", padx=20, pady=20)
+ 
+desc = tk.Label(content_frame, text="Ievadiet savu e-pasta adresi (piemērs: lietotajs@gmail.com)", 
+                bg="white", fg="#333", font=("Segoe UI", 12))
+desc.pack(pady=(10, 20))
+ 
+entry = tk.Entry(content_frame, font=("Segoe UI", 16), justify="center", width=35, bd=2, relief="ridge")
+entry.pack(pady=10, ipady=8)
+ 
+check_btn = tk.Button(content_frame, text="Pārbaudīt", font=("Segoe UI", 14, "bold"), bg="#2ecc71", fg="white",
+                      activebackground="#27ae60", relief="flat", padx=20, pady=8, command=check_email)
+check_btn.pack(pady=20)
+ 
+result_label = tk.Label(content_frame, text="", font=("Segoe UI", 14), bg="white")
+result_label.pack(pady=10)
+ 
+root.mainloop()
+ 
+#Mēs ņemam informāciju no w3.school
