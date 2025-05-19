@@ -10,11 +10,11 @@ def check_email():
     if re.match(pattern, email):
         domain = email.split('@')[1].lower()
         if domain in valid_domains:
-            result_label.config(text="✅ Status: VALID", fg="#2f855a")
+            result_label.config(text=" Status: VALID", fg="#2f855a")
         else:
-            result_label.config(text="❌ Status: Neatļauts domēns", fg="#dd6b20")
+            result_label.config(text=" Status: Neatļauts domēns", fg="#dd6b20")
     else:
-        result_label.config(text="❌ Status: Nepareizs formāts", fg="#e53e3e")
+        result_label.config(text=" Status: Nepareizs formāts", fg="#e53e3e")
  
 def close_app():
     root.destroy()
